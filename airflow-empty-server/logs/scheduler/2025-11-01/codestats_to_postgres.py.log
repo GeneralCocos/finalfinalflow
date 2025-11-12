@@ -1,0 +1,21 @@
+[2025-11-01T05:30:29.519+0000] {processor.py:161} INFO - Started process (PID=442) to work on /opt/airflow/dags/codestats_to_postgres.py
+[2025-11-01T05:30:29.649+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/codestats_to_postgres.py for tasks to queue
+[2025-11-01T05:30:29.697+0000] {logging_mixin.py:188} INFO - [2025-11-01T05:30:29.685+0000] {dagbag.py:545} INFO - Filling up the DagBag from /opt/airflow/dags/codestats_to_postgres.py
+[2025-11-01T05:30:31.509+0000] {processor.py:840} INFO - DAG(s) 'codestats_to_postgres' retrieved from /opt/airflow/dags/codestats_to_postgres.py
+[2025-11-01T05:30:32.238+0000] {logging_mixin.py:188} INFO - [2025-11-01T05:30:32.227+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2025-11-01T05:30:32.604+0000] {logging_mixin.py:188} INFO - [2025-11-01T05:30:32.603+0000] {dag.py:3954} INFO - Setting next_dagrun for codestats_to_postgres to 2025-11-01 05:30:00+00:00, run_after=2025-11-01 05:31:00+00:00
+[2025-11-01T05:30:33.249+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/codestats_to_postgres.py took 3.785 seconds
+[2025-11-01T05:31:05.386+0000] {processor.py:161} INFO - Started process (PID=457) to work on /opt/airflow/dags/codestats_to_postgres.py
+[2025-11-01T05:31:05.434+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/codestats_to_postgres.py for tasks to queue
+[2025-11-01T05:31:05.546+0000] {logging_mixin.py:188} INFO - [2025-11-01T05:31:05.545+0000] {dagbag.py:545} INFO - Filling up the DagBag from /opt/airflow/dags/codestats_to_postgres.py
+[2025-11-01T05:31:06.409+0000] {processor.py:840} INFO - DAG(s) 'codestats_to_postgres' retrieved from /opt/airflow/dags/codestats_to_postgres.py
+[2025-11-01T05:31:06.612+0000] {logging_mixin.py:188} INFO - [2025-11-01T05:31:06.610+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2025-11-01T05:31:06.842+0000] {logging_mixin.py:188} INFO - [2025-11-01T05:31:06.841+0000] {dag.py:3954} INFO - Setting next_dagrun for codestats_to_postgres to 2025-11-01 05:31:00+00:00, run_after=2025-11-01 05:32:00+00:00
+[2025-11-01T05:31:07.109+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/codestats_to_postgres.py took 1.960 seconds
+[2025-11-01T05:31:37.582+0000] {processor.py:161} INFO - Started process (PID=475) to work on /opt/airflow/dags/codestats_to_postgres.py
+[2025-11-01T05:31:37.598+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/codestats_to_postgres.py for tasks to queue
+[2025-11-01T05:31:37.604+0000] {logging_mixin.py:188} INFO - [2025-11-01T05:31:37.603+0000] {dagbag.py:545} INFO - Filling up the DagBag from /opt/airflow/dags/codestats_to_postgres.py
+[2025-11-01T05:31:37.748+0000] {processor.py:840} INFO - DAG(s) 'codestats_to_postgres' retrieved from /opt/airflow/dags/codestats_to_postgres.py
+[2025-11-01T05:31:37.978+0000] {logging_mixin.py:188} INFO - [2025-11-01T05:31:37.978+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2025-11-01T05:31:38.222+0000] {logging_mixin.py:188} INFO - [2025-11-01T05:31:38.222+0000] {dag.py:3954} INFO - Setting next_dagrun for codestats_to_postgres to 2025-11-01 05:31:00+00:00, run_after=2025-11-01 05:32:00+00:00
+[2025-11-01T05:31:38.395+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/codestats_to_postgres.py took 0.876 seconds
