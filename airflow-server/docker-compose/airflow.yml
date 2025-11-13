@@ -1,0 +1,131 @@
+services:
+  airflow-metadata:
+    image: postgres:16-alpine
+    container_name: airflow-metadata
+    environment:
+      POSTGRES_USER: airflow
+      POSTGRES_PASSWORD: airflow
+      POSTGRES_DB: airflow
+    ports:
+      - "5432:5432"
+    volumes:
+      - airflow-db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U airflow -d airflow"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+
+  spacex-postgres:
+    image: postgres:16-alpine
+    container_name: spacex-postgres
+    environment:
+      POSTGRES_USER: spacex
+      POSTGRES_PASSWORD: spacex
+      POSTGRES_DB: spacex
+    ports:
+      - "5434:5432"
+    volumes:
+      - spacex-db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U spacex -d spacex"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+
+  trino:
+    image: trinodb/trino:432
+    container_name: trino
+    ports:
+      - "8081:8080"
+    volumes:
+      - ../docker-compose/trino/catalog:/etc/trino/catalog
+    depends_on:
+      airflow-metadata:
+        condition: service_healthy
+      spacex-postgres:
+        condition: service_healthy
+    restart: unless-stopped
+
+  airflow-init:
+    image: my-custom-airflow:2.10.2-py3.12
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+      args:
+        AIRFLOW_VERSION: 2.10.2
+        PYTHON_VERSION: "3.12"
+    container_name: airflow-init
+    env_file: ./airflow/airflow.env
+    depends_on:
+      airflow-metadata:
+        condition: service_healthy
+      spacex-postgres:
+        condition: service_healthy
+    command: ["init"]
+    user: "${AIRFLOW_UID:-50000}:0"
+    volumes:
+      - ../dags:/opt/airflow/dags
+      - ../logs:/opt/airflow/logs
+      - ../plugins:/opt/airflow/plugins
+    restart: "no"
+
+  airflow-webserver:
+    image: my-custom-airflow:2.10.2-py3.12
+    container_name: airflow-webserver
+    command: ["webserver"]
+    env_file: ./airflow/airflow.env
+    depends_on:
+      airflow-metadata:
+        condition: service_healthy
+      spacex-postgres:
+        condition: service_healthy
+      airflow-init:
+        condition: service_completed_successfully
+      trino:
+        condition: service_started
+    healthcheck:
+      test: ["CMD-SHELL", "curl --fail http://localhost:8080/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+    ports:
+      - "8080:8080"
+    user: "${AIRFLOW_UID:-50000}:0"
+    volumes:
+      - ../dags:/opt/airflow/dags
+      - ../logs:/opt/airflow/logs
+      - ../plugins:/opt/airflow/plugins
+    restart: unless-stopped
+
+  airflow-scheduler:
+    image: my-custom-airflow:2.10.2-py3.12
+    container_name: airflow-scheduler
+    command: ["scheduler"]
+    env_file: ./airflow/airflow.env
+    depends_on:
+      airflow-metadata:
+        condition: service_healthy
+      spacex-postgres:
+        condition: service_healthy
+      airflow-init:
+        condition: service_completed_successfully
+      trino:
+        condition: service_started
+    healthcheck:
+      test: ["CMD-SHELL", "airflow jobs check --job-type SchedulerJob --hostname \"$${HOSTNAME}\""]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+    user: "${AIRFLOW_UID:-50000}:0"
+    volumes:
+      - ../dags:/opt/airflow/dags
+      - ../logs:/opt/airflow/logs
+      - ../plugins:/opt/airflow/plugins
+    restart: unless-stopped
+
+volumes:
+  airflow-db-data: {}
+  spacex-db-data: {}
